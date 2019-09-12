@@ -1,0 +1,57 @@
+<launch>
+  <!-- Robot pose -->
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="0"/>
+  <arg name="yaw" default="0"/>
+
+  <!--<include file="$(find turtlebot3_gazebo)/worlds/world_with_building_obstacles_turtlebot.world">
+  </include>-->
+  <!-- node pkg="turtlebot3_gazebo" name="world_with_building_obstacles_turtlebot" type="worlds/world_with_building_obstacles_turtlebot.world" /-->
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find my_robot)/world/my_udacity_off.world"/>
+    <!--<arg name="world_name" value="$(find my_robot)/world/custom_office.world"/>-->
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!--Load the map-->
+  <arg name="map_file" default="$(find my_robot)/maps/udacity_office_map.yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- AMCL -->
+  <include file="$(find my_robot)/launch/amcl.launch"/>
+
+  <!-- Move_base -->
+  <include file="$(find aco_ros)/launch/move_base_custom.launch"/>
+
+
+<!-- Find my robot Description-->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find my_robot)/urdf/my_robot.xacro'"/>
+
+  <!-- Send fake joint values-->
+<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  <param name="use_gui" value="false"/>
+</node>
+
+<!-- Send robot states to tf -->
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+  <!-- Spawn My Robot -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+        args="-urdf -param robot_description -model my_robot
+              -x $(arg x) -y $(arg y) -z $(arg z)
+              -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+
+
+  <!--launch rviz-->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find my_robot)/rviz/rrt2_rviz.rviz">
+  </node>
+
+</launch>

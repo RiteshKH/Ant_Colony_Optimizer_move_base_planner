@@ -1,0 +1,46 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="odom" />
+  <arg name="move_forward_only" default="false"/>
+
+  <!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    
+    <!--Ant Colony Optimization algorithm:: Global planner-->
+    <param name="base_global_planner" value="Aco_planner/AcoPlanner" />
+    <!--<param name="base_global_planner" value="navfn/NavfnROS" />-->
+
+    <!--Relaxed Astar algorithm:: Global planner-->
+    <!-- <param name="base_global_planner" value="RAstar_planner/RAstarPlannerROS" /> -->
+    
+    <!-- DWAPlannerROS command-->
+    <!--<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />-->
+
+    <!--EBandPlannerROS command-->
+    <!-- <param name="base_local_planner" value="eband_local_planner/EBandPlannerROS"/> -->
+    
+
+    <rosparam file="$(find my_robot)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find my_robot)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot)/param/move_base_params.yaml" command="load" />
+    <!--<rosparam file="$(find my_robot)/param/dwa_local_planner_params.yaml" command="load" />-->
+    <!--<rosparam file="$(find my_robot)/param/base_local_planner_params.yaml" command="load" />-->
+    <rosparam file="$(find my_robot)/param/teb_local_planner_params.yaml" command="load" />
+
+    <!--TebLocalPlannerROS command-->
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <!--<param name="controller_frequency" value="10.0" />-->
+
+    <!-- LOAD COSTMAP_CONVERTER PARAMETERS HERE -->
+    <rosparam file="$(find my_robot)/param/costmap_converter_params.yaml" command="load" />
+
+
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    <remap from="projected_map" to="map"/>
+    <!--<param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />-->
+  </node>
+</launch>

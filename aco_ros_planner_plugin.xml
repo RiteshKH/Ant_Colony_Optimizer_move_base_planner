@@ -1,0 +1,5 @@
+<library path="lib/libaco_ros_lib">
+  <class name="Aco_planner/AcoPlanner" type="Aco_planner::AcoPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+    <description>This is Ant Colony Optimizer global planner plugin for use with move_base pkg in ROS.</description>
+  </class>
+</library>
