@@ -19,4 +19,9 @@ The map provided my the map_server is not loading into the OccupancyGrid map obj
   
  
 ### Credits: 
-iPath: A C++ Library of Intelligent Global Path Planners for Mobile Robots with ROS Integration. 
+iPath: A C++ Library of Intelligent Global Path Planners for Mobile Robots with ROS Integration. </br>
+https://github.com/coins-lab/ipath
+
+## Related Papers:
+* [Inverted Ant Colony Optimization for Search and Rescue in an Unknown Maze-like Indoor Environment](https://www.researchgate.net/profile/Dymitr_Ruta/publication/326239231_Inverted_ant_colony_optimization_for_search_and_rescue_in_an_unknown_maze-like_indoor_environment/links/5bc46fbc458515a7a9e7b78c/Inverted-ant-colony-optimization-for-search-and-rescue-in-an-unknown-maze-like-indoor-environment.pdf)
+* [Genetic Programming: Evolution of Mona Lisa](https://rogerjohansson.blog/2008/12/07/genetic-programming-evolution-of-mona-lisa/)
